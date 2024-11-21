@@ -21,12 +21,18 @@ def index(request):
     # Generate counts of books with the word "lord" in the title
     num_lord_books = Book.objects.filter(title__icontains='lord').count()
 
+    # Number of visits to this view, as counted in the session variable.
+    num_visits = request.session.get('num_visits', 0)
+    num_visits += 1
+    request.session['num_visits'] = num_visits
+
     context = {
         'num_books': num_books,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
         'num_authors': num_authors,
         'num_lord_books': num_lord_books,
+        'num_visits': num_visits,
     }
 
     # Render the HTML template index.html with the data in the context variable
